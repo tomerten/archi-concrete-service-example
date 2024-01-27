@@ -1,0 +1,33 @@
+@startuml diagram
+skinparam linetype ortho
+
+component Application as app {
+    abstract class AbstractApplication
+    interface IService
+    interface IServiceFactory
+
+    AbstractApplication -right-> IService
+    AbstractApplication -down-> IServiceFactory
+    IServiceFactory ..> IService
+}
+
+component concrete as concrete {
+    class ConcreteService
+    class ConcreteServiceFactory
+
+    ConcreteServiceFactory --> ConcreteService : creates
+    ConcreteServiceFactory --|> IServiceFactory
+    ConcreteService --|> IService
+}
+
+component concrete_app as concrete_app {
+    class ConcreteApplication
+    ConcreteApplication --|> AbstractApplication
+}
+component main as main {
+    class Main
+    Main -> ConcreteApplication : uses
+    Main --> ConcreteServiceFactory : uses
+}
+concrete -[hidden]up-> app
+@enduml
